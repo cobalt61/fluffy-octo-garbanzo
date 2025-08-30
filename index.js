@@ -34,19 +34,25 @@ app.get("/small-server/:placeId", async (req, res) => {
 
     if (!data.data) return res.status(404).json({ error: "No servers found" });
 
-    // Filter for servers with 1 player
-    // Filter for small PUBLIC servers
-const smallServers = data.data.filter(server => 
-    server.playing === 1 && !server.privateServerId
-);
-
+    // Filter for small PUBLIC servers (1 player, not private)
+    const smallServers = data.data.filter(server => 
+        server.playing === 1 && !server.privateServerId
+    );
 
     if (smallServers.length === 0) return res.json({ message: "No small servers right now" });
 
-    res.json({ servers: smallServers });
+    // Pick a random index between 5 and 15, capped by array length
+    const minIndex = 5;
+    const maxIndex = 15;
+    const index = Math.min(
+      Math.floor(Math.random() * (maxIndex - minIndex + 1)) + minIndex,
+      smallServers.length - 1
+    );
+
+    const chosenServer = smallServers[index];
+
+    res.json({ server: chosenServer });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
-
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
