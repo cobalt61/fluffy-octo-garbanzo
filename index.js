@@ -23,9 +23,10 @@ app.get("/thumbnail/:userid", async (req, res) => {
   }
 });
 
-// New: Fetch small servers for a game
 app.get("/small-server/:placeId", async (req, res) => {
   const placeId = req.params.placeId;
+
+  // Always fetch fresh server list from Roblox API
   const robloxApi = `https://games.roblox.com/v1/games/${placeId}/servers/Public?limit=100&sortOrder=Asc`;
 
   try {
