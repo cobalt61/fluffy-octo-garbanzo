@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Thumbnail endpoint (your original)
+// Thumbnail endpoint
 app.get("/thumbnail/:userid", async (req, res) => {
   const userId = req.params.userid;
   const robloxApi = `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=420x420&format=Png&isCircular=false`;
@@ -23,10 +23,9 @@ app.get("/thumbnail/:userid", async (req, res) => {
   }
 });
 
+// Small-server endpoint (always fetches fresh data)
 app.get("/small-server/:placeId", async (req, res) => {
   const placeId = req.params.placeId;
-
-  // Always fetch fresh server list from Roblox API
   const robloxApi = `https://games.roblox.com/v1/games/${placeId}/servers/Public?limit=100&sortOrder=Asc`;
 
   try {
@@ -37,7 +36,7 @@ app.get("/small-server/:placeId", async (req, res) => {
 
     // Filter for small PUBLIC servers (1 player, not private)
     const smallServers = data.data.filter(server => 
-        server.playing === 1 && !server.privateServerId
+      server.playing === 1 && !server.privateServerId
     );
 
     if (smallServers.length === 0) return res.json({ message: "No small servers right now" });
