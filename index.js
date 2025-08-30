@@ -35,7 +35,11 @@ app.get("/small-server/:placeId", async (req, res) => {
     if (!data.data) return res.status(404).json({ error: "No servers found" });
 
     // Filter for servers with 1 player
-    const smallServers = data.data.filter(server => server.playing === 1);
+    // Filter for small PUBLIC servers
+const smallServers = data.data.filter(server => 
+    server.playing === 1 && !server.privateServerId
+);
+
 
     if (smallServers.length === 0) return res.json({ message: "No small servers right now" });
 
