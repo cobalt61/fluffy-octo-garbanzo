@@ -42,8 +42,8 @@ app.get("/small-server/:placeId", async (req, res) => {
     if (smallServers.length === 0) return res.json({ message: "No small servers right now" });
 
     // Pick a random index between 5 and 15, capped by array length
-    const minIndex = 5;
-    const maxIndex = 15;
+    const minIndex = 1;
+    const maxIndex = 20;
     const index = Math.min(
       Math.floor(Math.random() * (maxIndex - minIndex + 1)) + minIndex,
       smallServers.length - 1
